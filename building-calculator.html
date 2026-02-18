@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Building Materials Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #1f2933;
+      color: #fff;
+      text-align: center;
+      padding: 30px 20px;
+    }
+    main {
+      max-width: 600px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px;
+      width: 100%;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+    .results {
+      margin-top: 20px;
+      background: #e5e7eb;
+      padding: 15px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Building Materials Calculator</h1>
+  <p>Estimate materials needed for your building project</p>
+</header>
+
+<main>
+  <label for="area">Building Area (m²)</label>
+  <input type="number" id="area" placeholder="Enter building area" min="1">
+
+  <label for="type">Building Type</label>
+  <select id="type">
+    <option value="residential">Residential</option>
+    <option value="commercial">Commercial</option>
+    <option value="warehouse">Warehouse</option>
+  </select>
+
+  <label for="wall">Wall Type</label>
+  <select id="wall">
+    <option value="brick">Brick</option>
+    <option value="concrete">Concrete</option>
+    <option value="wood">Wood</option>
+  </select>
+
+  <button onclick="calculateMaterials()">Calculate</button>
+
+  <div class="results" id="results" style="display:none;">
+    <h3>Estimated Materials</h3>
+    <p id="cement"></p>
+    <p id="sand"></p>
+    <p id="gravel"></p>
+    <p id="bricks"></p>
+  </div>
+</main>
+
+<script>
+function calculateMaterials() {
+  const area = parseFloat(document.getElementById('area').value);
+  const type = document.getElementById('type').value;
+  const wall = document.getElementById('wall').value;
+
+  if (!area || area <= 0) {
+    alert('Please enter a valid area!');
+    return;
+  }
+
+  // Base ratios per m²
+  let cement = 0, sand = 0, gravel = 0, bricks = 0;
+
+  // Adjust based on building type
+  switch(type) {
+    case 'residential':
+      cement = area * 8;
+      sand = area * 10;
+      gravel = area * 12;
+      bricks = area * 50;
+      break;
+    case 'commercial':
+      cement = area * 10;
+      sand = area * 12;
+      gravel = area * 15;
+      bricks = area * 60;
+      break;
+    case 'warehouse':
+      cement = area * 12;
+      sand = area * 15;
+      gravel = area * 18;
+      bricks = area * 70;
+      break;
+  }
+
+  // Adjust based on wall type
+  if (wall === 'concrete') bricks = Math.round(bricks * 0.7);
+  if (wall === 'wood') bricks = Math.round(bricks * 0.4);
+
+  document.getElementById('cement').innerText = `Cement: ${cement.toFixed(1)} bags`;
+  document.getElementById('sand').innerText = `Sand: ${sand.toFixed(1)} m³`;
+  document.getElementById('gravel').innerText = `Gravel: ${gravel.toFixed(1)} m³`;
+  document.getElementById('bricks').innerText = `Bricks: ${bricks} pcs`;
+
+  document.getElementById('results').style.display = 'block';
+}
+</script>
+
+</body>
+</html>
